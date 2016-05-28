@@ -21,6 +21,7 @@ import "net/http"
 import "io/ioutil"
 import "encoding/json"
 import "fmt"
+import "os"
 
 /*=====================================================================
 #     (Struct)
@@ -33,9 +34,9 @@ type Token struct {
 /*=====================================================================
 #     (Global定数)
 #=====================================================================*/
-var MyPocket_Email = "hoshina@trust.ocn.ne.jp"
-var MyPocket_Password = "Kaei8349aA8k1"
-var MyPocket_AccessKey = "Mypocket58316053905d254dd29c6ed97ba53caa471f3ce977db9a1fbc3af9cd2955614d6ad9cf4499fee5c694c0a54e91fd25ae7f17b442631605270001"
+var MyPocket_Email = os.Getenv("MyPocket_Email")
+var MyPocket_Password = os.Getenv("MyPocket_Password")
+var MyPocket_AccessKey = os.Getenv("MyPocket_AccessKey")
 
 /*=====================================================================
 #     (GetToken関数)
