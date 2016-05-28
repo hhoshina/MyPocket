@@ -65,11 +65,25 @@ func GetToken(X_WSSE_DATA string) string {
 /*=====================================================================
 #     (FileCopy関数)
 #=====================================================================*/
-func FileCopy() {
+func FileCopy(token string) {
+	var AUTHORI string
+	AUTHORI += "Bearer "
+	AUTHORI += token
 	req, _ := http.NewRequest("POST", "https://cocoa.ntt.com/rest/storage/v1/files/copy", nil)
+	req.Header.Set("Authorization", AUTHORI)
+	req.Header.Set("X-Authorization", MyPocket_AccessKey)
 	req.Header.Set("Content-Type", "application/json; charset=utf-8")
 	req.Header.Set("Content-length", "68")
-	req.Header.Set("Authorization", "")
+
+	client := new(http.Client)
+	resp, _ := client.Do(req)
+	defer resp.Body.Close()
+	byteArray, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	fmt.Println(token)
+	fmt.Println(string(byteArray))
 
 }
 
@@ -77,7 +91,7 @@ func FileCopy() {
 #     (main関数)
 #=====================================================================*/
 func main() {
-
+	var token string
 	var X_WSSE_DATA string
 	X_WSSE_DATA += "UsernameToken Username=\""
 	X_WSSE_DATA += MyPocket_Email
@@ -86,6 +100,7 @@ func main() {
 	X_WSSE_DATA += "\",AccessKey=\""
 	X_WSSE_DATA += MyPocket_AccessKey
 	X_WSSE_DATA += "\",UsernameType=\"1\""
-	fmt.Println(X_WSSE_DATA)
-	fmt.Printf(GetToken(X_WSSE_DATA))
+
+	token = GetToken(X_WSSE_DATA)
+	fmt.Println(token)
 }
